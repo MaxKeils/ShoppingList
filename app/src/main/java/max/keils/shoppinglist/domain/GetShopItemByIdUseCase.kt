@@ -1,9 +1,9 @@
 package max.keils.shoppinglist.domain
 
-class GetShopItemByIdUseCase {
+class GetShopItemByIdUseCase(private val repository: ShopListRepository) {
 
     fun getShopItemById(id: Int): ShopItem {
-        TODO()
+        return repository.getShopItemById(id = id)
     }
 
 }

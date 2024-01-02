@@ -1,9 +1,9 @@
 package max.keils.shoppinglist.domain
 
-class AddShopItemUseCase {
+class AddShopItemUseCase(private val repository: ShopListRepository) {
 
     fun addShopItem(item: ShopItem) {
-        TODO()
+        repository.addShopItem(item = item)
     }
 
 }
