@@ -2,18 +2,12 @@ package max.keils.shoppinglist.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import max.keils.shoppinglist.R
 import max.keils.shoppinglist.domain.ShopItem
 import java.lang.RuntimeException
 
-class ShopListAdapter : RecyclerView.Adapter<ShopItemViewHolder>() {
-
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
 
     var onShopItemOnLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemOnClickListener: ((ShopItem) -> Unit)? = null
@@ -30,7 +24,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopItemViewHolder>() {
         return ShopItemViewHolder(view = view)
     }
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
-        val shopItem = shopList[position]
+        val shopItem = getItem(position)
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.itemView.setOnLongClickListener {
@@ -43,15 +37,12 @@ class ShopListAdapter : RecyclerView.Adapter<ShopItemViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = shopList[position]
+        val item = getItem(position)
         return if (item.enabled)
             ACTIVE_ITEM
         else DISABLE_ITEM
     }
 
-    override fun getItemCount(): Int {
-        return shopList.size
-    }
     companion object {
         const val ACTIVE_ITEM = 1
         const val DISABLE_ITEM = 0
