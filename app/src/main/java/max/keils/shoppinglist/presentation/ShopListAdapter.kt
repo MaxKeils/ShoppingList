@@ -2,6 +2,8 @@ package max.keils.shoppinglist.presentation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DiffUtil.DiffResult
 import androidx.recyclerview.widget.RecyclerView
 import max.keils.shoppinglist.R
 import max.keils.shoppinglist.domain.ShopItem
@@ -11,8 +13,10 @@ class ShopListAdapter : RecyclerView.Adapter<ShopItemViewHolder>() {
 
     var shopList = listOf<ShopItem>()
         set(value) {
+            val callback = ShopListDiffCallback(shopList, value)
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this)
             field = value
-            notifyDataSetChanged()
         }
 
     var onShopItemOnLongClickListener: ((ShopItem) -> Unit)? = null
