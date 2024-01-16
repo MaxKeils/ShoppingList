@@ -33,7 +33,7 @@ class ShopItemViewModel : ViewModel() {
     val shouldCloseScreen : LiveData<Unit>
         get() = _shouldCloseScreen
 
-    fun getShopItem(id : Int) {
+    fun getShopItemById(id : Int) {
         val item = getShopItemByIdUseCase.getShopItemById(id)
         _shopItem.value = item
     }
@@ -90,12 +90,14 @@ class ShopItemViewModel : ViewModel() {
 
     private fun validateInput(name: String, count: Int) : Boolean {
         var result = true
-        if (name.isBlank())
+        if (name.isBlank()) {
             _errorInputName.value = true
             result = false
-        if (count <= 0)
-            _errorInputName.value = true
+        }
+        if (count <= 0) {
+            _errorInputCount.value = true
             result = false
+        }
         return result
     }
 
