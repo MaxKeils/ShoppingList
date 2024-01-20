@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.onShopItemOnClickListener = {
-            Log.d("MainActivity", "setupRecyclerView. Item: $it")
             val intent = ShopItemActivity.newIntentEditItem(this, it.id)
             startActivity(intent)
         }
