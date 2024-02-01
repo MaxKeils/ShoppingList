@@ -7,7 +7,7 @@ import android.os.Bundle
 import max.keils.shoppinglist.R
 import max.keils.shoppinglist.domain.ShopItem
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
@@ -15,9 +15,9 @@ class ShopItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
-
         parseIntent()
-        launchRightMode()
+        if (savedInstanceState == null)
+            launchRightMode()
     }
     private fun launchRightMode() {
         val fragment = when (screenMode) {
@@ -26,9 +26,10 @@ class ShopItemActivity : AppCompatActivity() {
             else -> throw RuntimeException("Unknown screenMode $screenMode")
         }
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container, fragment)
+            .replace(R.id.shop_item_container, fragment)
             .commit()
     }
+
 
     private fun parseIntent() {
         if (!intent.hasExtra(EXTRA_SCREEN_MODE))
@@ -45,7 +46,6 @@ class ShopItemActivity : AppCompatActivity() {
                 throw RuntimeException("Param shop item id is absent!")
 
             shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
-
         }
     }
 
@@ -68,6 +68,10 @@ class ShopItemActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
             return intent
         }
+    }
+
+    override fun onEditingFinished() {
+        finish()
     }
 
 }
